@@ -50,6 +50,58 @@ public class Scanner {
         tokens.add(new Token(type, lexeme, line, start+1, literal));
     }
 
+    private void string() {
+        String value = "";
+        boolean escCharError = false;
+        while(peek() != '"' && peek() != '\n' && !isAtEnd()) {
+            if(peek() == '\\'){
+                // consume \ but not included in value"
+                advance();
+                // consume next char & check if escape acceptable
+                char c = advance();
+                switch(c) {
+                    case '"' :
+                        value += '"';
+                        break;
+                    case '\\' :
+                        value += '\\';
+                        break;
+                    case 'n' :
+                        value += '\n';
+                        break;
+                    case 'r' :
+                        value += '\r';
+                        break;
+                    case 't' :
+                        value += '\t';
+                        break;
+                    default:
+                        ErrorHandler.error(line, start+1, "Illegal escape character in string literal.");
+                        escCharError = true;
+                        //return;
+                }
+            }
+            else
+                value += advance();
+        }
+        
+        if(peek() == '\n') {
+            ErrorHandler.error(line, start+1, "Illegal new line character in string literal.");
+            return;
+        }
+        if(isAtEnd()) {
+            ErrorHandler.error(line, start+1, "String literal not terminated properly.");
+            return;
+        }
+
+        // consume the closing "
+        advance();
+
+        if(!escCharError)
+            addToken(TokenType.STRING, value);
+
+    }
+
     private void scanToken() {
         char c = advance();
 
@@ -85,7 +137,7 @@ public class Scanner {
                 addToken(match('/') ? TokenType.BLOCK_COMMENT_END : TokenType.STAR);
                 break; 
             case '!' :
-                
+                addToken(match('=') ? TokenType.BANG_EQUAL : TokenType.BANG);
                 break;
             case '=' :
                 addToken(match('=') ? TokenType.EQUAL_EQUAL : TokenType.EQUAL);
@@ -109,7 +161,10 @@ public class Scanner {
                 else 
                     addToken(TokenType.SLASH);
                 break;
-            case ' ':
+            case '"' :
+                string();
+                break;
+            case ' ' :
             case '\t':
             case '\r':
                 break;

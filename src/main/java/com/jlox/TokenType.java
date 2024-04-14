@@ -11,6 +11,9 @@ public enum TokenType {
     GREATER, GREATER_EQUAL,
     LESS, LESS_EQUAL,
 
+    // Special tokens.
+    BLOCK_COMMENT_START, BLOCK_COMMENT_END,
+
     // Literals.
     IDENTIFIER, STRING, NUMBER,
 

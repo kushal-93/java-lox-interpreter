@@ -13,6 +13,7 @@ import java.util.List;
 public class Lox {
 
     public static boolean hadError = false;
+
     public static void main(String[] args) throws IOException{
         if (args.length > 1) {
             System.out.println("Usage: jlox [script]");
@@ -36,7 +37,7 @@ public class Lox {
         BufferedReader reader = new BufferedReader(inputStream);
 
         while(true) {
-            System.out.println("> ");
+            System.out.print("> ");
             String line = reader.readLine();
             if (line == null)
                 break;

@@ -28,7 +28,7 @@ public class Scanner {
         return source.charAt(current);
     }
 
-    private char peekSecond() {
+    private char peekNext() {
         if(isAtEnd() || current+1 >= source.length())
             return '\0';
         return source.charAt(current+1);
@@ -102,6 +102,27 @@ public class Scanner {
 
     }
 
+    private boolean number(boolean dot) {
+        while(isDigit(peek()))
+            advance();
+        
+        if(peek() == '.' && isDigit(peekNext())) {
+            advance();
+            if(dot) {
+                ErrorHandler.error(line, start+1, "Illegal character in number literal");
+                return false;
+            }
+            else {
+                return number(true);
+            }
+        }
+        return true;
+    }
+
+    private boolean isDigit(char c) {
+        return (c >= '0' && c <= '9');
+    }
+
     private void scanToken() {
         char c = advance();
 
@@ -119,7 +140,13 @@ public class Scanner {
                 addToken(TokenType.RIGHT_BRACE); 
                 break;
             case '.' : 
-                addToken(TokenType.DOT); 
+                if(isDigit(peek())) {
+                    if(number(true))
+                        addToken(TokenType.NUMBER, Double.parseDouble(source.substring(start, current)));
+                }
+                    
+                else
+                    addToken(TokenType.DOT); 
                 break;
             case ',' : 
                 addToken(TokenType.COMMA); 
@@ -155,7 +182,7 @@ public class Scanner {
                 }
                 else if(match('*')) {
                     addToken(TokenType.BLOCK_COMMENT_START);
-                    while(!isAtEnd() && peek() != '*' && peekSecond() != '/')
+                    while(!isAtEnd() && peek() != '*' && peekNext() != '/')
                         advance();
                 }
                 else 
@@ -173,7 +200,13 @@ public class Scanner {
                 break;
 
             default : 
-                ErrorHandler.error(line, start+1, "Unexpected character!");
+                if(isDigit(c)) {
+                    if(number(false))
+                        addToken(TokenType.NUMBER, Double.parseDouble(source.substring(start, current)));
+                }
+                else {
+                    ErrorHandler.error(line, start+1, "Unexpected character!");
+                }
                 break;
         }
     }

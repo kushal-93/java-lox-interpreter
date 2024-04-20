@@ -1,6 +1,6 @@
-lox interpreter in java following the brilliant book http://www.craftinginterpreters.com.
+lox interpreter in java based on Bob Nystrom's http://www.craftinginterpreters.com.
 
-This implementation going to cover all the features the book has. 
+This implementation going to cover all the features in this book. 
 Along with it, following enhancements: 
 
 - support for multiline block comments.

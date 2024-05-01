@@ -2,11 +2,11 @@ package com.jlox;
 
 public class Token {
     
-    private final TokenType type;
-    private final String lexeme;
-    private final int line;
-    private final int column;
-    private final Object literal;
+    final TokenType type;
+    final String lexeme;
+    final int line;
+    final int column;
+    final Object literal;
 
     Token(TokenType type, String lexeme, int line, int column, Object literal) {
         this.type = type;

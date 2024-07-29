@@ -125,7 +125,7 @@ public class Scanner {
             addToken(TokenType.STRING, value);
 
     }
-
+        
     private boolean number(boolean dot) {
         while(isDigit(peek()))
             advance();
@@ -190,6 +190,7 @@ public class Scanner {
                 break;
             case '.' : 
                 if(isDigit(peek())) {
+                    //  a number can start with a period. In that case the token becomes a NUMBER
                     if(number(true))
                         addToken(TokenType.NUMBER, Double.parseDouble(source.substring(start, current)));
                 }                    

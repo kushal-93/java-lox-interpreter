@@ -5,6 +5,23 @@ abstract class Expr {
 
     abstract <R> R accept(Visitor<R> visitor);
 
+    static class Conditional extends Expr {
+        Conditional(Expr... exprs) {
+            this.left = exprs[0];
+            this.middle = exprs[1];
+            this.right = exprs[2];
+        }
+        
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visitConditionalExpr(this);
+        }
+        
+        final Expr left;
+        final Expr middle;
+        final Expr right;
+    }
+
     static class Binary extends Expr {
         Binary(Expr left, Token operator, Expr right) {
             this.left = left;

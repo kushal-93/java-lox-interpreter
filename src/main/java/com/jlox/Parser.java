@@ -87,7 +87,18 @@ public class Parser {
     }
 
     private Expr expression() {
-        return equality();
+        return conditional();
+    }
+
+    private Expr conditional() {
+        Expr expr = equality();
+        if (match(TokenType.QUESTION)) {
+            Expr middle = expression();
+            consume(TokenType.COLON, "Expect ':' in conditional expression.");
+            Expr right = expression();
+            return new Expr.Conditional(expr, middle, right);
+        }
+        return expr;
     }
 
     // equality → comparison ( ( "!=" | "==" ) comparison )* ;

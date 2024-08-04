@@ -13,13 +13,18 @@ public class RPNConverter implements Visitor<String>{
     }
 
     @Override
+    public String visitConditionalExpr(Expr.Conditional expr) {
+        return  "conditional " + print(expr.left, expr.middle, expr.right);
+    }
+
+    @Override
     public String visitBinaryExpr(Expr.Binary expr) {
         return  print(expr.left, expr.right) + expr.operator.lexeme;
     }
 
     @Override
     public String visitGroupingExpr(Expr.Grouping expr) {
-        return "group" + print(expr.expression);
+        return "group " + print(expr.expression);
     }
 
     @Override

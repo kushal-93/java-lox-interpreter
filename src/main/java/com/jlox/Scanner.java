@@ -211,7 +211,13 @@ public class Scanner {
                 break;
             case '*' : 
                 addToken(match('/') ? TokenType.BLOCK_COMMENT_END : TokenType.STAR);
-                break; 
+                break;
+            case ':' : 
+                addToken(TokenType.COLON);
+                break;
+            case '?' : 
+                addToken(TokenType.QUESTION);
+                break;
             case '!' :
                 addToken(match('=') ? TokenType.BANG_EQUAL : TokenType.BANG);
                 break;

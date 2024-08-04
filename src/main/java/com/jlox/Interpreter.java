@@ -27,7 +27,7 @@ public class Interpreter implements Visitor<Object> {
                 return -(double)right;
             case BANG:
                 return !isTruthy(right);
-
+            default:
         }
         // should be unreachable
         return null;

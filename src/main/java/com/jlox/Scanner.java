@@ -218,6 +218,12 @@ public class Scanner {
             case '?' : 
                 addToken(TokenType.QUESTION);
                 break;
+            case '&' : 
+                addToken(TokenType.BITWISE_AND);
+                break;
+            case '|' : 
+                addToken(TokenType.BITWISE_OR);
+                break;
             case '!' :
                 addToken(match('=') ? TokenType.BANG_EQUAL : TokenType.BANG);
                 break;

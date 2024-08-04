@@ -116,12 +116,25 @@ public class Parser {
         return expr;
     }
 
-    // comparison → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
+    // comparison → bitwise ( ( ">" | ">=" | "<" | "<=" ) bitwise )* ;
 
     private Expr comparison() {
-        Expr expr = term();
+        Expr expr = bitwise();
 
         while(match(TokenType.GREATER, TokenType.GREATER_EQUAL, TokenType.LESS, TokenType.LESS_EQUAL)) {
+            Token operator = previous();
+            Expr right = bitwise();
+            expr = new Expr.Binary(expr, operator, right);
+        }
+        return expr;
+    }
+
+    // bitwise → term ( ( "&" | "|" ) term )* ;
+
+    private Expr bitwise() {
+        Expr expr = term();
+
+        while(match(TokenType.BITWISE_AND, TokenType.BITWISE_OR)) {
             Token operator = previous();
             Expr right = term();
             expr = new Expr.Binary(expr, operator, right);

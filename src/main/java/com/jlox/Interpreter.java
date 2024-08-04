@@ -1,6 +1,15 @@
 package com.jlox;
 
-public class Interpreter implements Visitor<Object> { 
+public class Interpreter implements Visitor<Object> {
+
+    @Override
+    public Object visitConditionalExpr(Expr.Conditional expr) {
+        Object left = evaluate(expr.left);
+        if(isTruthy(left)) 
+            return evaluate(expr.middle);
+        else 
+            return evaluate(expr.right);
+    }
 
     @Override
     public Object visitBinaryExpr(Expr.Binary expr) {

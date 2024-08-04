@@ -1,14 +1,21 @@
 grammar:
 
-expression     → equality ;
+expression     → conditional ;
+conditional    → equality ( "?" expression ":" expression )? ;
 equality       → comparison ( ( "!=" | "==" ) comparison )* ;
-comparison     → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
+comparison     → bitwise ( ( "&" | "|" ) bitwise )*;
+bitwise        → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
 term           → factor ( ( "-" | "+" ) factor )* ;
 factor         → unary ( ( "/" | "*" ) unary )* ;
 unary          → ( "!" | "-" ) unary
                | primary ;
 primary        → NUMBER | STRING | "true" | "false" | "nil"
-               | "(" expression ")" ;
+               | "(" expression ")" 
+               /* error productions*/
+               | ( "==" | "!=" ) equality
+               | ( ">" | "<" | "<=" | ">=" ) comparision
+               | ( "+" ) term
+               | ( "*" | "/" ) factor
 
 
 possible enhancements/changes:

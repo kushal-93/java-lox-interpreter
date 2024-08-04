@@ -90,6 +90,8 @@ public class Parser {
         return conditional();
     }
 
+    // conditional → equality ( "?" expression ":" expression )? ;
+
     private Expr conditional() {
         Expr expr = equality();
         if (match(TokenType.QUESTION)) {
@@ -170,7 +172,11 @@ public class Parser {
 
     /* 
         primary → NUMBER | STRING | "true" | "false" | "nil" 
-                  | "(" expression ")" ;
+                  | "(" expression ")" 
+                  | ( "==" | "!=" ) equality
+                  | ( ">" | "<" | "<=" | ">=" ) comparision
+                  | ( "+" ) term
+                  | ( "*" | "/" ) factor
     */
 
     private Expr primary() {
@@ -185,6 +191,30 @@ public class Parser {
             return new Expr.Literal(true);
         if(match(TokenType.NIL)) 
             return new Expr.Literal(null);
+        
+        if(match(TokenType.EQUAL_EQUAL, TokenType.BANG_EQUAL)) {
+            error(previous(), "Missing left operand");
+            equality();
+            return null;
+        }
+
+        if(match(TokenType.GREATER, TokenType.GREATER_EQUAL, TokenType.LESS, TokenType.LESS_EQUAL)) {
+            error(previous(), "Missing left operand");
+            comparison();
+            return null;
+        }
+
+        if(match(TokenType.PLUS)) {
+            error(previous(), "Missing left operand");
+            term();
+            return null;
+        }
+
+        if(match(TokenType.STAR, TokenType.SLASH)) {
+            error(previous(), "Missing left operand");
+            factor();
+            return null;
+        }
         
         if (match(TokenType.LEFT_PAREN)) {
             Expr expr = expression();

@@ -7,7 +7,7 @@ public class ErrorHandler {
 
     private static void report(int line, int column, String where, String message) {
         Lox.hadError = true;
-        System.err.println("[line " + line + ", column "+column+"] Error " + where + ": " + message);
+        System.err.println("[line " + line + ", column "+column+"] Error" + where + ": " + message);
     }
 
     static void error(Token token, String message) {

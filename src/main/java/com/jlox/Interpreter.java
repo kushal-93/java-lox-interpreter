@@ -42,6 +42,14 @@ public class Interpreter implements Visitor<Object> {
                 return (double)left * (double)right;
             case SLASH:
                 return (double)left / (double)right;
+            case BITWISE_AND:
+                if(left instanceof Integer && right instanceof Integer)
+                    return ((int)left & (int)right);
+                break;
+            case BITWISE_OR:
+                if(left instanceof Integer && right instanceof Integer)
+                    return ((int)left | (int)right);
+                break;
             default:
             
         }

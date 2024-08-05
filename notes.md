@@ -1,5 +1,5 @@
 grammar:
-
+```
 expression     → conditional ;
 conditional    → equality ( "?" expression ":" expression )? ;
 equality       → comparison ( ( "!=" | "==" ) comparison )* ;
@@ -17,7 +17,7 @@ primary        → NUMBER | STRING | "true" | "false" | "nil"
                | ( "+" ) term
                | ( "*" | "/" ) factor
 
-
+```
 possible enhancements/changes:
 
 - block comments

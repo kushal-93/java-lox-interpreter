@@ -5,6 +5,11 @@ public class ErrorHandler {
         report(line, column, "", message);
     }
 
+    public static void runtimeError(RuntimeError error) {
+        System.err.println("[line "+error.token.line +", column "+error.token.column+"] Error: "+error.getMessage());
+        Lox.hadRuntimeError = true;
+    }
+
     private static void report(int line, int column, String where, String message) {
         Lox.hadError = true;
         System.err.println("[line " + line + ", column "+column+"] Error" + where + ": " + message);

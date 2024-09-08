@@ -58,13 +58,15 @@ public class Interpreter implements Visitor<Object> {
                 checkNumberOperand(expr.operator, left, right);
                 return (double)left / (double)right;
             case BITWISE_AND:
-                if(left instanceof Integer && right instanceof Integer)
-                    return ((int)left & (int)right);
-                break;
+                if (isIntegerLike(left) && isIntegerLike(right)) {
+                    return intify((Double)left) & intify((Double)right);
+                }
+                throw new RuntimeError(expr.operator, "Operand must be two whole numbers.");
             case BITWISE_OR:
-                if(left instanceof Integer && right instanceof Integer)
-                    return ((int)left | (int)right);
-                break;
+                if (isIntegerLike(left) && isIntegerLike(right)) {
+                    return intify((Double)left) | intify((Double)right);
+                }
+                throw new RuntimeError(expr.operator, "Operand must be two whole numbers.");
             default:
             
         }
@@ -136,5 +138,20 @@ public class Interpreter implements Visitor<Object> {
         }
 
         return object.toString();
+    }
+
+    private boolean isIntegerLike(Object object) {
+        if(object instanceof Double) {
+            String text = object.toString();
+            if(text.endsWith(".0"))
+                return true;
+        }
+        return false;
+    }
+
+    private Integer intify(Double object) {
+        String string = object.toString();
+        string = string.substring(0, string.length()-2);
+        return Integer.parseInt(string);
     }
 }

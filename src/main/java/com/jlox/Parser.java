@@ -113,7 +113,8 @@ public class Parser {
     }
 
     private Stmt statement() {
-        if(match(TokenType.PRINT)) return printStatement();
+        if(match(TokenType.PRINT)) 
+            return printStatement();
         return expressionStatement();
     }
 

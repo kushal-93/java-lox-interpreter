@@ -40,6 +40,11 @@ public class AstPrinter implements Expr.Visitor<String>{
         return parenthesize(expr.operator.lexeme, expr.right);
     }
 
+    @Override
+    public String visitVariableExpr(Expr.Variable expr) {
+        return parenthesize("", null);
+    }
+
     public static void main(String[] args) {
         Expr expression = new Expr.Binary(
             new Expr.Unary(

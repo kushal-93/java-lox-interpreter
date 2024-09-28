@@ -45,6 +45,11 @@ public class AstPrinter implements Expr.Visitor<String>{
         return parenthesize("", null);
     }
 
+    @Override
+    public String visitAssignExpr(Expr.Assign expr) {
+        return parenthesize("", null);
+    }
+
     public static void main(String[] args) {
         Expr expression = new Expr.Binary(
             new Expr.Unary(
